@@ -49,13 +49,13 @@ var App = {
 						runDiv.innerHTML = html + e.stack;
 					}
 					runDiv.innerHTML += "; Expected " + run.answer
-					run.correct = (response === run.answer);
+					var correct = (lesson.checkResponse(response,run.answer));
 					runDiv.innerHTML += "; ";
-					if (run.correct) {
+					if (correct) {
 						runDiv.innerHTML += "Correct!";
 						lesson.score ++;
 					}
-					summaryDiv.innerHTML = lesson.score;
+					summaryDiv.innerHTML = ((lesson.score/lesson.runs.length) * 100).toFixed(2) + "%";
 					responseDiv.appendChild(runDiv);
 
 				})
