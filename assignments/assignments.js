@@ -22,12 +22,19 @@ var App = {
 
 			lessonDiv.appendChild(titleDiv);
 			lessonDiv.appendChild(descriptionDiv);
+
 			assignmentsDiv.appendChild(lessonDiv);
 
 			if (lesson.response) {
 				var responseDiv = document.createElement('div');
 				responseDiv.setAttribute('class', 'response');
+				var summaryDiv = document.createElement('div');
+				summaryDiv.setAttribute('class', 'summary');
 
+				lessonDiv.appendChild(responseDiv);
+				lessonDiv.appendChild(summaryDiv);
+
+				lesson.score = 0;
 				lesson.runs.forEach(function (run) {
 					var runDiv = document.createElement('div');
 					runDiv.setAttribute('class', 'run');
@@ -42,10 +49,16 @@ var App = {
 						runDiv.innerHTML = html + e.stack;
 					}
 					runDiv.innerHTML += "; Expected " + run.answer
+					run.correct = (response === run.answer);
+					runDiv.innerHTML += "; ";
+					if (run.correct) {
+						runDiv.innerHTML += "Correct!";
+						lesson.score ++;
+					}
+					summaryDiv.innerHTML = lesson.score;
 					responseDiv.appendChild(runDiv);
-				})
-			assignmentsDiv.appendChild(responseDiv);
 
+				})
 			}
 		})
 	},

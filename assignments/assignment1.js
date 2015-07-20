@@ -27,5 +27,8 @@ App.lessons.push({
 				answer: 75
 			}
 		],
+	answer: function (a,b) {
+		return (a+b);
+	},
 	correct: false,
 });
