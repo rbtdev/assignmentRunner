@@ -3,8 +3,16 @@ App.lessons.push({
 	description: "Write a function which take an array as an argument and returns it sorted.",
 	runs: [
 			{
-				args: [[5,3,10,1,2,4]],
+				args:  [[5,3,10,1,2,4]],
 				answer: [1,2,3,4,5,10]
+			},
+			{
+				args:  [[6,6,2,10,43,64,21,2,3,4]],
+				answer: [2,2,3,4,6,6,10,21,43,64]
+			},
+			{
+				args:  [[2,3,2,7,8,4]],
+				answer: [2,2,3,4,7,8]
 			}
 		],
 	checkResponse: function (resp, expected) {
