@@ -5,48 +5,26 @@ var App = {
 		var assignmentsTitleDiv = document.createElement('div');
 		assignmentsTitleDiv.setAttribute('class', 'title');
 		assignmentsDiv.appendChild(assignmentsTitleDiv);
-
 		assignmentsTitleDiv.innerHTML = "These are your assignments.";
+		App.runTests(assignmentsDiv);
+	},
 
-		App.lessons.forEach( function (lesson) {
-			var lessonDiv = document.createElement('div');
-			lessonDiv.setAttribute('class', 'lesson')
+	runTests: function (assignmentsDiv) {
 
-			var titleDiv = document.createElement('div');
-			titleDiv.innerHTML = lesson.title;
-			titleDiv.setAttribute('class', 'title');
+		var runLesson = function (lesson) {
 
-			var descriptionDiv = document.createElement('div');
-			descriptionDiv.innerHTML = lesson.description;
-			descriptionDiv.setAttribute('class', 'description');
-
-			lessonDiv.appendChild(titleDiv);
-			lessonDiv.appendChild(descriptionDiv);
-
-			assignmentsDiv.appendChild(lessonDiv);
-
-			if (lesson.response) {
-				var responseDiv = document.createElement('div');
-				responseDiv.setAttribute('class', 'response');
-				var summaryDiv = document.createElement('div');
-				summaryDiv.setAttribute('class', 'summary');
-
-				lessonDiv.appendChild(responseDiv);
-				lessonDiv.appendChild(summaryDiv);
-
-				lesson.score = 0;
-				lesson.runs.forEach(function (run) {
+				var runTest = function (run, caseNumber) {
 					var runDiv = document.createElement('div');
 					runDiv.setAttribute('class', 'run');
-
+					runDiv.innerHTML = "Test Case #" + caseNumber + "<br>";
 					var response = null;
 					var html = "Passing " + run.args.toString() + "; Returned ";
 					try {
 						response = lesson.response.apply(this, run.args)
-						runDiv.innerHTML = html + response;
+						runDiv.innerHTML += html + response;
 					}
 					catch (e) {
-						runDiv.innerHTML = html + e.stack;
+						runDiv.innerHTML += html + e.stack;
 					}
 					runDiv.innerHTML += "; Expected " + run.answer
 					var correct = (lesson.checkResponse(response,run.answer));
@@ -55,12 +33,42 @@ var App = {
 						runDiv.innerHTML += "Correct!";
 						lesson.score ++;
 					}
-					summaryDiv.innerHTML = ((lesson.score/lesson.runs.length) * 100).toFixed(2) + "%";
-					responseDiv.appendChild(runDiv);
+					else {
+						runDiv.innerHTML += "Wrong!";
+					}
+					runDiv.innerHTML += "</br>"
 
-				})
+					summaryDiv.innerHTML = ((lesson.score/lesson.runs.length) * 100).toFixed(2) + "%";
+					responseDiv.appendChild(runDiv);	
+				}
+
+			var lessonDiv = document.createElement('div')
+			lessonDiv.setAttribute('class', 'lesson');
+			var titleDiv = document.createElement('div')
+			titleDiv.setAttribute('class', 'title');
+			var descriptionDiv = document.createElement('div')
+			descriptionDiv.setAttribute('class', 'description');
+
+			titleDiv.innerHTML = lesson.title;
+			descriptionDiv.innerHTML = lesson.description;
+
+			lessonDiv.appendChild(titleDiv);
+			lessonDiv.appendChild(descriptionDiv);
+			assignmentsDiv.appendChild(lessonDiv);
+
+			if (lesson.response) {
+				var responseDiv = document.createElement('div');
+				responseDiv.setAttribute('class', 'response');
+				var summaryDiv = document.createElement('div');
+				summaryDiv.setAttribute('class', 'summary');
+				lessonDiv.appendChild(responseDiv);
+				lessonDiv.appendChild(summaryDiv);
+				lesson.score = 0;
+				lesson.runs.forEach(runTest);
 			}
-		})
+		}
+
+		App.lessons.forEach(runLesson)
 	},
 	
 	lessons: [],
