@@ -1,0 +1,24 @@
+.assignments {
+	width: 100%;
+}
+
+.assignments .title {
+	font-size: 20px;
+}
+
+.lesson {
+	margin-top: 10px;
+}
+
+.lesson .title {
+	text-decoration: underline;
+	margin: 10px;
+}
+
+.response {
+	margin: 10px;
+}
+
+.response .run {
+	font-style: italic;
+}
